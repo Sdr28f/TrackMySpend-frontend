@@ -5,10 +5,16 @@ import SignUp from './pages/Signup';
 import SignIn from './pages/SignIn';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
+import SpendList from './pages/SpendList';
+import SpendForm from './pages/SpendForm';
+import CreateCategory from './pages/CreateCategory';
+import SpendDetails from './pages/SpendDetails';
+import UpdateSpend from './pages/UpdateSpend';
 
 function App() {
   const [user, setUser] = useState(null);
-
+  const [selectedMonth, setSelectedMonth] = useState('2026-05');
+  const [income, setIncome] = useState(1000);
   
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -31,6 +37,13 @@ function App() {
         <Route path="/sign-up" element={!user ? <SignUp /> : <Navigate to='/dashboard'/>} />
         <Route path="/sign-in" element={!user ? <SignIn setUser={setUser} /> : <Navigate to='/dashboard'/>} />
         <Route path="/dashboard" element={user ? <Dashboard user={user} /> : <Navigate to='/sign-in'/>} />
+
+
+        <Route path='/spends' element={<SpendList selectedMonth={selectedMonth} setSelectedMonth={setSelectedMonth} income={income} setIncome={setIncome}/>}/>
+        <Route path='/spends/form' element={<SpendForm setSelectedMonth={setSelectedMonth}/>}/>
+        <Route path='/category/new' element={<CreateCategory/>}/>
+        <Route path='/spends/:id' element={<SpendDetails/>}/>
+        <Route path='/spends/:id/edit' element={<UpdateSpend/>}/>
 
       </Routes>
     </div>

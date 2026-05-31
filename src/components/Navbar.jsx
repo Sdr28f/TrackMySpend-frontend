@@ -1,4 +1,4 @@
-import { Link } from 'react-router'
+import { Link, NavLink } from 'react-router'
 
 function Navbar({ user, setUser }) {
 
@@ -9,32 +9,37 @@ function Navbar({ user, setUser }) {
   }
 
   return (
-    <div>
+    <nav>
       {/* Routes seen by everyone */}
-      <Link className='nav-item' to='/'>Homepage</Link>
+      <Link to='/' id='logo'>Track<span>MySpend</span></Link>
+      
+      <div id='destinations'>
+        <NavLink to='/' end className={({isActive})=> isActive ? 'active' : ''}>Homepage</NavLink>
 
-      {user ? (
-        // Links for protected routes only for logged in users
-        <>
-        <Link className='nav-item' to='/dashboard'>Dashboard</Link>
+        {user ? (
+          // Links for protected routes only for logged in users
+          <>
+            <NavLink to='/dashboard' className={({isActive})=> isActive ? 'active' : ''}>Dashboard</NavLink>
+            <NavLink to='/spends/form' className={({isActive})=> isActive ? 'active' : ''}>Create Spend</NavLink>
+            <NavLink to='/spends' className={({isActive})=> isActive ? 'active' : ''}>All Spends</NavLink>
+            <NavLink to='/category/new' className={({isActive})=> isActive ? 'active' : ''}>Create Category</NavLink>
+          </>
+        ) : (
+          // links for not logged in users
+          <>
+            <NavLink to='/sign-up' className={({isActive})=> isActive ? 'active' : ''}>Sign up</NavLink>
+            <NavLink to='/sign-in' className={({isActive})=> isActive ? 'active' : ''}>Sign in</NavLink>
+          </>
+        )}
+      </div>
 
-        <span className='nav-item'>{user.username}</span>
-       
-        <button className='nav-item' onClick={logOut}>Log Out</button>
-
-
-        </>
-      ) :
-      (
-        // links for not logged in users
-        <>
-        <Link className='nav-item' to='/sign-up'>Sign up</Link>
-        <Link className='nav-item' to='/sign-in'>Sign in</Link>
-
-        </>
-      )
-      }
-    </div>
+      {user && (
+        <div id='actions'>
+          <span style={{ color: '#9ca3af', fontSize: '14px', fontWeight: 'bold' }}>{user.username}</span>
+          <button onClick={logOut}>Log Out</button>
+        </div>
+      )}
+    </nav>
   )
 }
 
